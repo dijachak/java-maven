@@ -4,31 +4,31 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // clean the directory
-                sh "rm -rf *"
                 // Checkout the Git repository
-                sh "https://github.com/khadijachakkour/java-maven.git"
+                git branch: 'main', url: 'https://github.com/khadijachakkour/java-maven.git'
             }
         }
         stage('Build') {
             steps {
-                // Here, we can can run Maven commands
+                // Here, we can run Maven commands
                 script {
-                    
-                    def currentDir = pwd()
-                    echo "Current directory: ${currentDir}"
-                    
                     // Navigate to the directory containing the Maven project
                     dir('maven') {
                         // Run Maven commands
                         sh 'mvn clean test package'
-                        sh "java -jar target/maven-0.0.1-SNAPSHOT.jar"
                     }
-                    
-                   
+                }
+            }
+        }
+        stage('Run') {
+            steps {
+                // Run the packaged JAR file
+                script {
+                    dir('maven') {
+                        sh 'java -jar target/maven-0.0.1-SNAPSHOT.jar'
+                    }
                 }
             }
         }
     }
 }
-
