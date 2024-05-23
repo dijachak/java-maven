@@ -20,15 +20,5 @@ pipeline {
                 }
             }
         }
-        stage('Run') {
-            steps {
-                // Run the packaged JAR file
-                script {
-                    dir('maven') {
-                        sh 'java -jar target/maven-0.0.1-SNAPSHOT.jar'
-                    }
-                }
-            }
-        }
     }
 }
